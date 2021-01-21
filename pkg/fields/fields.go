@@ -38,11 +38,11 @@ type SDKVersion struct {
 // Operator data to be collected after finding the dump
 type OperatorData struct {
 	CommunityOperators   map[string]ReportColumns
-	CertifiedOperators   (map[string]ReportColumns)
-	MarketplaceOperators (map[string]ReportColumns)
-	OperatorHub          (map[string]ReportColumns)
-	RedHatOperators      (map[string]ReportColumns)
-	ProdOperators        (map[string]ReportColumns)
+	CertifiedOperators   map[string]ReportColumns
+	MarketplaceOperators map[string]ReportColumns
+	OperatorHub          map[string]ReportColumns
+	RedHatOperators      map[string]ReportColumns
+	ProdOperators        map[string]ReportColumns
 	SDKVersionCount      SDKVersion
 	OperatorTypeCount    OperatorType
 }
