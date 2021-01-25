@@ -21,6 +21,9 @@ var (
 	operatorHub          = make(map[string]fields.ReportColumns)
 	redHatOperators      = make(map[string]fields.ReportColumns)
 	prodOperators        = make(map[string]fields.ReportColumns)
+	allOperators         = make(map[string]fields.ReportColumns)
+	layoutStamp          = make(map[string]int)
+	versionStamp         = make(map[string]int)
 	// count of pre 1.0 and post 1.0 SDK versions
 	preSDKMajorRel = 0
 	postSDKMajRel  = 0
@@ -50,6 +53,8 @@ func CollectDump(inputList []fields.Inputs) fields.OperatorData {
 		dump(db, inputList[i].Source)
 	}
 
+	calculateCounts(allOperators)
+
 	return fields.OperatorData{
 		CommunityOperators:   communityOperators,
 		CertifiedOperators:   certifiedOperators,
@@ -57,6 +62,9 @@ func CollectDump(inputList []fields.Inputs) fields.OperatorData {
 		OperatorHub:          operatorHub,
 		RedHatOperators:      redHatOperators,
 		ProdOperators:        prodOperators,
+		AllOperators:         allOperators,
+		LayoutData:           layoutStamp,
+		VersionData:          versionStamp,
 		SDKVersionCount: fields.SDKVersion{
 			PreMajorRel: preSDKMajorRel,
 			PostMajorel: postSDKMajRel,
@@ -66,6 +74,32 @@ func CollectDump(inputList []fields.Inputs) fields.OperatorData {
 			Ansible: ansibleOp,
 			Helm:    helmOp,
 		},
+	}
+
+}
+
+func calculateCounts(overallData map[string]fields.ReportColumns) {
+	for _, data := range overallData {
+		getOperatorType(data.OperatorType)
+		getReleaseCount(data.SDKVersion)
+	}
+
+	for _, v := range overallData {
+		val, ok := layoutStamp[v.OperatorType]
+		if ok {
+			layoutStamp[v.OperatorType] = val + 1
+		} else {
+			layoutStamp[v.OperatorType] = 1
+		}
+	}
+
+	for _, v := range overallData {
+		val, ok := versionStamp[v.SDKVersion]
+		if ok {
+			versionStamp[v.SDKVersion] = val + 1
+		} else {
+			versionStamp[v.SDKVersion] = 1
+		}
 	}
 
 }
@@ -113,11 +147,7 @@ func dump(db *sql.DB, sourceDescription string) {
 			OperatorType: operatorType,
 		}
 
-		// add operator Type count
-		getOperatorType(operatorType)
-
-		// getReleaseCount
-		getReleaseCount(sdkVersion)
+		allOperators[op.Operator] = op
 
 		switch sourceDescription {
 		case source_redhat:
@@ -146,23 +176,31 @@ func getName(operatorName string) string {
 }
 
 func getOperatorType(operatorType string) {
+	if operatorType == "" {
+		return
+	}
 	opType := strings.Split(operatorType, ".")[0]
 
 	if opType == "go" {
 		goOp++
 	} else if opType == "ansible" {
 		ansibleOp++
-	} else {
+	} else if opType == "helm" {
 		helmOp++
 	}
 }
 
 func getReleaseCount(sdkVersion string) {
+	if sdkVersion == "" {
+		return
+	}
 	ver := strings.Replace(sdkVersion, "operator-sdk-", "", -1)
-	if semver.Compare(ver, "1.0.0") >= 0 {
+	c := semver.Compare(ver, "v1.0.0")
+	if c >= 0 {
 		// post release
 		postSDKMajRel++
 	} else {
+		// pre release
 		preSDKMajorRel++
 	}
 }

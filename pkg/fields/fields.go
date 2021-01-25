@@ -43,6 +43,9 @@ type OperatorData struct {
 	OperatorHub          map[string]ReportColumns
 	RedHatOperators      map[string]ReportColumns
 	ProdOperators        map[string]ReportColumns
+	AllOperators         map[string]ReportColumns
+	LayoutData           map[string]int
+	VersionData          map[string]int
 	SDKVersionCount      SDKVersion
 	OperatorTypeCount    OperatorType
 }

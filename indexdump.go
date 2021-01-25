@@ -8,7 +8,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/varshaprasad96/operator-sdk-data-collector/pkg/collector"
 	"github.com/varshaprasad96/operator-sdk-data-collector/pkg/fields"
-	output "github.com/varshaprasad96/operator-sdk-data-collector/pkg/output/xlsx"
+	"github.com/varshaprasad96/operator-sdk-data-collector/pkg/output/xlsx"
 )
 
 func main() {
@@ -41,7 +41,7 @@ func main() {
 	}
 
 	// TODO: Add csv format and make it more reusable
-	err = output.GetOutput(operatorData, filepath+"/report/")
+	err = xlsx.GetOutput(operatorData, filepath+"/report/")
 	if err != nil {
 		fmt.Printf("something wrong while writing the output")
 		os.Exit(1)
