@@ -12,6 +12,8 @@ type ReportColumns struct {
 	SDKVersion string
 	// operatortype from stamps
 	OperatorType string
+	// csv name
+	CSVName string
 }
 
 // Inputs obtained from index image label

@@ -145,6 +145,7 @@ func dump(db *sql.DB, sourceDescription string) {
 			Company:      companyName,
 			SDKVersion:   sdkVersion,
 			OperatorType: operatorType,
+			CSVName:      csvStruct.Name,
 		}
 
 		allOperators[op.Operator] = op
