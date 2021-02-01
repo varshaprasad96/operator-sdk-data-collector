@@ -114,14 +114,13 @@ func dump(db *sql.DB, sourceDescription string) {
 
 	defer row.Close()
 
-	var csvStruct v1alpha1.ClusterServiceVersion
-
 	for row.Next() {
 		var name string
 		var csv string
 		var bundlepath string
 		var operatorType string
 		var sdkVersion string
+		var csvStruct v1alpha1.ClusterServiceVersion
 
 		row.Scan(&name, &csv, &bundlepath)
 		err := json.Unmarshal([]byte(csv), &csvStruct)
@@ -145,6 +144,7 @@ func dump(db *sql.DB, sourceDescription string) {
 			Company:      companyName,
 			SDKVersion:   sdkVersion,
 			OperatorType: operatorType,
+			CSVName:      csvStruct.Name,
 		}
 
 		allOperators[op.Operator] = op

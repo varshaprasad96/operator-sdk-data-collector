@@ -79,6 +79,9 @@ func createSheetsAndFillIndexData(f *xlsx.File, index string, data map[string]fi
 
 		// Add sdk version
 		row.AddCell().Value = value.SDKVersion
+
+		// Add csv name
+		row.AddCell().Value = value.CSVName
 	}
 
 	return nil

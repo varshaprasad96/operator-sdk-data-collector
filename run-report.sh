@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo The following data will be collected and report can be found at reports/ folder:
-echo operator,created,company,sdkversion,operatortype
+echo operator,created,company,sdkversion,operatortype, csvName
 
 go run indexdump.go \
 "db/index.db.4.6.prod:prod:4.6" \
