@@ -40,9 +40,10 @@ func GetOutput(data fields.OperatorData, outputFilePath string) error {
 		return fmt.Errorf("error writing data for redhat operators %v", err)
 	}
 
-	if err := createSheetsAndFillIndexData(output, "prod", data.ProdOperators); err != nil {
-		return fmt.Errorf("error writing data for prod operators %v", err)
-	}
+	// prod is same as redhat operator index, hence commenting out this.
+	// if err := createSheetsAndFillIndexData(output, "prod", data.ProdOperators); err != nil {
+	// 	return fmt.Errorf("error writing data for prod operators %v", err)
+	// }
 
 	defer func() {
 		outputName := time.Now().Format("Mon-Jan2-15:04:05PST-2006")
@@ -82,6 +83,7 @@ func createSheetsAndFillIndexData(f *xlsx.File, index string, data map[string]fi
 
 		// Add csv name
 		row.AddCell().Value = value.CSVName
+
 	}
 
 	return nil
