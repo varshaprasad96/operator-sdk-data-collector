@@ -41,9 +41,9 @@ func GetOutput(data fields.OperatorData, outputFilePath string) error {
 	}
 
 	// prod is same as redhat operator index, hence commenting out this.
-	// if err := createSheetsAndFillIndexData(output, "prod", data.ProdOperators); err != nil {
-	// 	return fmt.Errorf("error writing data for prod operators %v", err)
-	// }
+	if err := createSheetsAndFillIndexData(output, "prod", data.ProdOperators); err != nil {
+		return fmt.Errorf("error writing data for prod operators %v", err)
+	}
 
 	defer func() {
 		outputName := time.Now().Format("Mon-Jan2-15:04:05PST-2006")
